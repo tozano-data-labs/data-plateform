@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    uses: tozano-data-labs/shared-workflows/.github/workflows/ci-python.yml@v1
+    with:
+      working-directory: pipelines
+      python-version: "3.12"
+
+  dbt:
+    uses: tozano-data-labs/shared-workflows/.github/workflows/ci-dbt.yml@v1
+    with:
+      working-directory: transformation
+      dbt-adapter: dbt-duckdb
+
+  dependency-review:
+    if: github.event_name == 'pull_request'
+    uses: tozano-data-labs/shared-workflows/.github/workflows/dependency-review.yml@v1
+
+  pr-title:
+    if: github.event_name == 'pull_request'
+    uses: tozano-data-labs/shared-workflows/.github/workflows/pr-title.yml@v1

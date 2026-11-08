@@ -1,0 +1,7 @@
+data_platform:
+  target: ci
+  outputs:
+    ci:
+      type: duckdb
+      path: "{{ env_var('DBT_DUCKDB_PATH', ':memory:') }}"
+      threads: 1
